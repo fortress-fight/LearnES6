@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <ul>
+        <li>01</li>
+        <li>02</li>
+        <li>03</li>
+        <li>04</li>
+        <li>05</li>
+        <li>06</li>
+        <li>07</li>
+        <li>08</li>
+        <li>09</li>
+        <li>10</li>
+    </ul>
+    <script>
+        var arrLike = document.querySelectorAll('li');
+        var newArr = Array.from(arrLike);
+        console.log(newArr);
+        newArr.forEach(function (e, i){
+            e.style.background = 'red'
+        });
+
+        var arrLike1 = new Set([1,'a']);
+        console.log(arrLike1);
+        var newArr1 = Array.from(arrLike1);
+        console.log(newArr1);
+
+    </script>
+</body>
+</html>
