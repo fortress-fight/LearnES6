@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        const dom = new Proxy({}, {
+            get (target, property) {
+                return function (attr = {}, ...children) {
+                    const el = document.createElement(property);
+                    for (let prop of Object.keys(attr)) {
+                        el.setAttribute(prop, attr[prop])
+                    }
+                    for (let child of children) {
+                        if (typeof child === 'string') {
+                            child = document.createTextNode(child)
+                        }
+                        el.appendChild(child)
+                    }
+                    return el;
+                }
+            }
+        })
+        const el = dom.div(
+            {"style": 'font-size:100px'},'this is a div element',
+            dom.span({"style": 'color: red'},'this is a span')
+        )
+        document.body.appendChild(el)
+    </script>
+</body>
+</html>

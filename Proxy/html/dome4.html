@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        var obj = {}
+        Reflect.defineProperty(obj, 'name', {
+            value: 123,
+            writable: false,
+            configurable: false
+        })
+        var proxy = new Proxy(obj, {
+            get: function (o, v){
+                return 1
+            }
+        })
+        console.log(proxy.name)
+    </script>
+</body>
+</html>

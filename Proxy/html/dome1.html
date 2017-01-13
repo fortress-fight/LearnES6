@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        var person = {
+            name: 'ff'
+        }
+        var proxy = new Proxy(person, {
+            get: function (obj, attr) {
+                console.log(arguments); // [Object, "name", Proxy]
+                if (attr in obj) {
+                    return obj[attr]+'get'
+                } else {
+                    throw new ReferenceError('这是一个错误：'+ attr + '没有找到')
+                }
+            }
+        })
+        console.log(proxy.name); // ffget
+        console.log(proxy.age); //Uncaught ReferenceError: 这是一个错误：age没有找到
+    </script>
+</body>
+</html>

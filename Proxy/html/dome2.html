@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        function createArr(...arg){
+            handle= {
+                get: function (target, index) {
+                    console.log(index);
+                    if (index>=0) {
+                    } else {
+                        index = target.length + +index;
+                    }
+                    console.log(index);
+                    return target[index]
+                }
+            }
+            return new Proxy(arg, handle)
+        }
+        var a = createArr(1,2,3,4,5,'a');
+        console.log(a[-2])
+    </script>
+</body>
+</html>
