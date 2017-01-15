@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        var handle = {
+            set(target,attr,val) {
+                if(attr == 'age') {
+                    if(val >= 100) {
+                        throw new Error('年龄不能超出100')
+                    }
+                }
+                target[attr]=val;
+            }
+        }
+        var proxy = new Proxy({}, handle);
+        proxy.age = '110';
+        console.log(proxy.age);
+    </script>
+</body>
+</html>

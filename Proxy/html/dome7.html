@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        var target = function () {
+            console.log('this is a normal fun');
+        }
+        var handle = {
+            apply (target,ctx,arg){
+                console.log(arg); // ["这个是proxy对象", "这个是第二个参数"]
+            }
+        }
+        var proxy = new Proxy(target, handle);
+        proxy('这个是proxy对象','这个是第二个参数')
+    </script>
+</body>
+</html>

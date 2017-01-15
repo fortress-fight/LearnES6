@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        var obj = {
+            name: 'ff'
+        };
+        var proxy = new Proxy(obj, {
+            get(target, val) {
+                return target[val] + 'get'
+            },
+            set()
+        })
+        console.log(proxy.name);
+    </script>
+</body>
+</html>

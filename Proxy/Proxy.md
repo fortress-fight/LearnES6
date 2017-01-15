@@ -104,3 +104,109 @@ document.body.appendChild(el)
     console.log(proxy.name) // get' on proxy: property 'name' is a read-only and non-configurable dat.....
 </script>
 ```
+
+### 1.1.2 set(target, propKey, receiver)
+
+[DOME6](./html/dome6.html)
+
+set() -- 用于连接某个属性的赋值行为
+
+```
+<script type="text/javascript">
+    var handle = {
+        set(target,attr,val) {
+            if(attr == 'age') {
+                if(val >= 100) {
+                    throw new Error('年龄不能超出100')
+                }
+            }
+            target[attr]=val;
+        }
+    }
+    var proxy = new Proxy({}, handle);
+    proxy.age = '110';
+    console.log(proxy.age);
+</script>
+```
+
+注：如果年龄设置超出100的时候，抛出错误
+
+1. 利用set方法，还可以数据绑定，即每当对象发生变化时，会自动更新 DOM。
+2. 有时，我们会在对象上面设置内部属性，属性名的第一个字符使用下划线开头，表示这些属性不应该被外部使用。结合get和set方法，就可以做到防止这些内部属性被外部读写。
+
+
+### 1.1.3 apply(target, propKey, receiver)
+[DOME6](./html/dome6.html)
+apply方法拦截函数的调用、call和apply操作。
+`apply (target, ctx, args)`
+
+- target --  目标对象，
+- ctx -- 目标对象的执行环境
+- args -- 目标对象参数数组
+
+```
+var target = function () {
+    console.log('this is a normal fun');
+}
+var handle = {
+    apply (target,ctx,arg){
+        console.log(arg); // ["这个是proxy对象", "这个是第二个参数"]
+    }
+}
+var proxy = new Proxy(target, handle);
+proxy('这个是proxy对象','这个是第二个参数')
+```
+
+### 1.1.4 has (target, key)
+`has (target, key)`
+
+has方法用来拦截HasProperty操作，即判断对象是否具有某个属性时，这个方法会生效。典型的操作就是in运算符。
+但是has拦截只对in循环生效，对for...in循环不生效，导致不符合要求的属性没有被排除在for...in循环之外。
+
+### 1.1.5 construct (target, args, newTarget)
+`construct (target, args, newTarget)`
+
+construct方法用于拦截new命令，下面是拦截对象的写法。
+
+### 1.1.6  deleteProperty (target, key)
+`deleteProperty (target, key)`
+
+deleteProperty方法用于拦截delete操作，如果这个方法抛出错误或者返回false，当前属性就无法被delete命令删除。
+
+### 1.1.7  defineProperty (target, key, descriptor)
+`defineProperty (target, key, descriptor)`
+
+defineProperty方法拦截了Object.defineProperty操作。
+
+### 1.1.8 getOwnPropertyDescriptor (target, key)
+`getOwnPropertyDescriptor (target, key)`
+
+getOwnPropertyDescriptor方法拦截Object.getOwnPropertyDescriptor，返回一个属性描述对象或者undefined。
+
+### 1.1.9  getPrototypeOf(target)
+` getPrototypeOf(target)`
+
+getPrototypeOf方法主要用来拦截Object.getPrototypeOf()运算符，以及其他一些操作。
+
+>Object.prototype.__proto__
+Object.prototype.isPrototypeOf()
+Object.getPrototypeOf()
+Reflect.getPrototypeOf()
+instanceof运算符
+
+### 1.1.10 isExtensible() -- 待
+
+isExtensible方法拦截Object.isExtensible操作。
+
+### 1.1.11 ownKeys()
+ownKeys方法用来拦截以下操作。
+
+>Object.getOwnPropertyNames()
+Object.getOwnPropertySymbols()
+Object.keys()
+
+
+
+
+
+-----------------------------能力有限是在看不下去了，只知道是各种拦截，等需要了再来继续学习
