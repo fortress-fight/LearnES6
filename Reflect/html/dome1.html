@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    var obj = {};
+    var obj1 = {
+        name: 'obj1'
+    }
+    Reflect.set(obj,'name','ff');
+    function bind1(){console.log(this);}
+    Reflect.set(obj,'say', bind1, obj1);
+    console.log(obj); // { name: 'ff' }
+    obj.say()</script>    
+</body>
+</html>
