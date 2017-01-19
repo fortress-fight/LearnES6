@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+
+        window.id = 'window'
+        function fn () {
+            setTimeout(()=>{
+                console.log(this,this.id);
+            }, 1000)
+        };
+        fn() // window undefined
+        /**
+         *  这里的fn中的this就是window，
+         *  而setTimeout中的箭头函数指向fn的内部this，即window
+         *  现在我们修改 fn 的执行环境
+         */
+        fn.call({id:'一个新的对象'}) // {id: "一个新的对象"} "一个新的对象"
+        /**
+         * 可以看到定时器中的this依旧是指向fn中的this；
+         * 下面是对照组
+         */
+        function fn1() {
+            setTimeout(function (){
+                console.log(this, this.id);
+            }, 2000)
+        }
+        fn1.call({id: '一个对照组对象'}) // window 'window'
+    </script>
+</body>
+</html>
