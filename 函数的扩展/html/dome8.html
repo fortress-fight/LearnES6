@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        var id = 'window';
+        let fn1 = () => {
+            console.log(this.id);
+        };
+        var obj = {
+            id: 'obj'
+        }
+
+        fn1()
+        // obj::fn1
+    </script>
+</body>
+</html>

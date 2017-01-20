@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        var handle = {
+            id: 'handle',
+            init: function (){
+                document.addEventListener('click', ev => this.type(event.type));
+            },
+            type: function (name){
+                console.log(name);
+            }
+        }
+        handle.init()
+
+        var fn = (...arg) => {console.log(arg);} //[ 1, 2, 3, 4 ]
+        fn(1,2,3,4)
+    </script>
+</body>
+</html>
