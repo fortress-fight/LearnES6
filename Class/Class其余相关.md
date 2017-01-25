@@ -116,7 +116,7 @@ console.log(Foo.p); //ff
 但是ES7 中存在一个静态属性的提案，目前已经支持Babel转码，这个提案对实例属性和静态属性，都规定了新的写法。（头疼）
 由于，浏览器还没有支持，所以目前仅作介绍；
 
-1. 类的实例：
+1. 类的实例属性：
 
 类的实例属性可以用等式，写入类的定义之中。
 ```
@@ -163,3 +163,92 @@ MyClass.myProp = 42;
 > 上面代码中，老写法的静态属性定义在类的外部。整个类生成以后，再生成静态属性。这样让人很容易忽略这个静态属性，也不符合相关代码应该放在一起的代码组织原则。另外，新写法是显式声明（declarative），而不是赋值处理，语义更好。
 
 ### 3.6 new.target属性
+[DOME17](./html/dome17.js)
+new是从构造函数生成实例的命令。ES6为new命令引入了一个new.target属性，（在构造函数中）返回new命令作用于的那个构造函数。如果构造函数不是通过new命令调用的，new.target会返回undefined，因此这个属性可以用来确定构造函数是怎么调用的
+1. class
+```
+class CreatePerson {
+    constructor (name) {
+        this.name = name;
+        console.log(new.target === CreatePerson);  // true
+    }
+}
+var person1 = new CreatePerson('ff')
+```
+class 的调用必须使用 new；
+
+2. function
+
+```
+function CreatePerson (name) {
+    this.name = name;
+    console.log(new.target === CreatePerson);
+}
+var person1 = new CreatePerson('ff') // true
+CreatePerson() // false
+```
+利用这个特性，可以控制构造函数只能通过new来使用（使用class，也能达到效果）
+
+注：子类继承父类时，new.target会返回子类。利用这个特性可以写出不能独立使用、必须继承后才能使用的类。
+
+```
+class CreatePerson {
+    constructor (name) {
+        if (new.target === CreatePerson) {
+            throw new Error('本类不能实例化')
+        }
+        this.name = name;
+    }
+}
+
+class Student extends CreatePerson {
+    constructor (name) {
+        super (name);
+        console.log(this.name);
+    }
+}
+
+// var person1 = new CreatePerson('p'); // 本类不能实例化
+var student1 = new Student('s') // s
+```
+
+上面代码中，CreatePerson类不能被实例化，只能用于继承。
+注意，在函数外部，使用new.target会报错。
+
+### 3.7 Mixin 模式的实现
+
+Mixin模式指的是，将多个类的接口“混入”（mix in）另一个类。它在ES6的实现如下。
+
+```
+function mix(...mixins) {
+  class Mix {}
+
+  for (let mixin of mixins) {
+    copyProperties(Mix, mixin);
+    copyProperties(Mix.prototype, mixin.prototype);
+  }
+
+  return Mix;
+}
+
+function copyProperties(target, source) {
+  for (let key of Reflect.ownKeys(source)) {
+    if ( key !== "constructor"
+      && key !== "prototype"
+      && key !== "name"
+    ) {
+      let desc = Object.getOwnPropertyDescriptor(source, key);
+      Object.defineProperty(target, key, desc);
+    }
+  }
+}
+
+```
+
+上面代码的mix函数，可以将多个对象合成为一个类。使用的时候，只要继承这个类即可。
+
+```
+class DistributedEdit extends mix(Loggable, Serializable) {
+  // ...
+}
+```
