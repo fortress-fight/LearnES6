@@ -94,7 +94,7 @@ var name = 'A';
 var name = 'A';
 
 if (true) {
-    console.log(let); //let is not defined
+    console.log(name); //name is not defined
     let name = 'B';
 }
 ```

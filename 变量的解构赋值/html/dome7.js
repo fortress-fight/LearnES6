@@ -44,6 +44,3 @@
 // showMe({undefined, age:11}) //ff想成为11岁
 
 // -------------------遍历Map结构
-
-let {name='ff', age='24'} = {age: 11};
-console.log(name, age); // ff 11

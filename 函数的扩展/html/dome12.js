@@ -3,6 +3,7 @@ function tco (fn) {
         active = false,
         accumulated = [];
     return function accumulator (){
+        accumulated.push(arguments);
         if (!active) {
             active = true;
             while (accumulated.length) {
