@@ -58,7 +58,8 @@ import { name, age } from './dome'
 import 'lodash';
 import 'lodash';
 ```
-5. 上面代码加载了两次lodash，但是只会执行一次。
+上面代码加载了两次lodash，但是只会执行一次。
+5.
 ```
 import { foo } from 'my_module';
 import { bar } from 'my_module';
@@ -207,8 +208,7 @@ customName(); // 'foo'
 > 2. 这里如果输出的不是一个匿名函数也会当成匿名函数处理
 > 3. export default命令用于指定模块的默认输出。显然，一个模块只能有一个默认输出，因此export default命令只能使用一次。所以，import命令后面才不用加大括号，因为只可能对应一个方法。
 > 4. 本质上，export default就是输出一个叫做default的变量或方法，然后系统允许你为它取任意名字。
-
-export default 可以和 export 同时使用
+> 5. export default 可以和 export 同时使用
 
 如果想在一条import语句中，同时输入默认方法和其他变量，可以写成下面这样。
 例如：
@@ -268,4 +268,28 @@ export { default as es6 } from './someModule';
 ES6 的模块实质是值的引用而不是通过拷贝实现的
 - 原文中 是将 ES6 模块加载与 commonJS 的模块加载做了比较，这里就不深入探讨
 
- 
+### 1.6 浏览器使用模块
+
+`<script type='module' src=''></script>`
+
+注： 使用 type='module' 会将这个文件异步加载
+
+>需要注意的是：
+该脚本自动采用严格模块。
+该脚本内部的顶层变量，都只在该脚本内部有效，外部不可见。
+该脚本内部的顶层的this关键字，返回undefined，而不是指向window。
+
+### 1.7 import()
+
+import语句会被JavaScript引擎静态分析，先于模块内的其他模块执行（叫做”连接“更合适）。所以，下面的代码会报错。
+
+```
+// 报错
+if (x === 2) {
+  import MyModual from './myModual';
+}
+```
+
+代码提升
+
+这样的设计，固然有利于编译器提高效率，但也导致无法在运行时（运行到import的时候）加载模块。从长远来看，import语句会取代 Node 的require方法，但是require是运行时加载模块，import语句显然无法取代这种动态加载功能。
